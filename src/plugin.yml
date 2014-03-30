@@ -1,0 +1,64 @@
+name: OneInTheChamber
+version: 0.1
+author: MaGiikAl
+main: fr.MaGiikAl.OneInTheChamber.Main.OneInTheChamberMain
+permissions:
+    oitc.admin:
+        description: Allows to have all the permissions
+        default: op
+    oitc.player:
+        description: Allows to play OneInTheChamber like a player
+        default: true
+        children:
+            oitc.join: true
+            oitc.help.players: true
+            oitc.leave: true
+            oitc.stats: true
+            oitc.stats.other: true
+    oitc.join:
+        description: Allows to join the arenas
+    oitc.help.players:
+        description: Allows to show the help
+    oitc.leave:
+        description: Allows to join the arenas
+    oitc.stats:
+        description: Allows to see his stats
+    oitc.stats.other:
+        description: Allows to see the player's stats
+    oitc.help.admin:
+        description: Allows to see the admin help
+        default: op
+    oitc.join.<arena>:
+        description: Allows to join an arena
+        default: op
+    oitc.create:
+        description: Allows to create arenas
+        default: op
+    oitc.delete:
+        description: Allows to delete arenas
+        default: op
+    oitc.setup.lobby:
+        description: Allows to set the main lobby
+        default: op
+    oitc.force.start:
+        description: Allows to start an arena
+        default: op
+    oitc.force.stop:
+        description: Allows to stop an arena
+        default: op
+    oitc.setup.addspawn:
+        description: Allows to add a spawn for an arena
+        default: op
+    oitc.setup.start:
+        description: Allows to set the start for an arena
+        default: op
+    oitc.setup.maxplayers:
+        description: Allows to set the max players for an arena
+        default: op
+    oitc.setup.minplayers:
+        description: Allows to set the min players for an arena
+        default: op
+commands:
+    oitc:
+        description: One in the chamber command
+        usage: /<command>

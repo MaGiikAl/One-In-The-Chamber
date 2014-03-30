@@ -1,0 +1,14 @@
+##/oitc setup lobby to set the lobby
+Lobby:
+  World:
+  X:
+  Y:
+  Z:
+  Yaw:
+  Pitch:
+
+##In seconds
+Time_before_start_arena: 20
+
+#Arenas
+Arenas:
