@@ -7,7 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 
-import fr.MaGiikAl.OneInTheChamber.Arena.Arena;
+import fr.MaGiikAl.OneInTheChamber.Arena.ArenaManager;
 
 public class FoodLevelChange implements Listener{
 
@@ -18,20 +18,10 @@ public class FoodLevelChange implements Listener{
 
 			Player p = (Player) e.getEntity();
 
-			for(Arena a : Arena.arenaObjects){
-
-				if(a.getPlayers().contains(p.getName())){
-
-					p.setFoodLevel(20);
-					e.setCancelled(true);
-					
-				}
-
+			if(ArenaManager.getArenaManager().isInArena(p)){
+				e.setCancelled(true);
+				p.setFoodLevel(20);
 			}
-
 		}
-
-
 	}
-
 }

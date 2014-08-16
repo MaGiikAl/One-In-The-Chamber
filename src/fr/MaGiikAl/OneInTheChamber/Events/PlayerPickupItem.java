@@ -6,7 +6,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 
-import fr.MaGiikAl.OneInTheChamber.Arena.Arena;
+import fr.MaGiikAl.OneInTheChamber.Arena.ArenaManager;
 
 public class PlayerPickupItem implements Listener{
 
@@ -15,16 +15,8 @@ public class PlayerPickupItem implements Listener{
 
 		Player p = e.getPlayer();
 
-		for(Arena a : Arena.arenaObjects){
-
-			if(a.getPlayers().contains(p.getName())){
-
-				e.setCancelled(true);
-
-			}
-
+		if(ArenaManager.getArenaManager().isInArena(p)){
+			e.setCancelled(true);
 		}
-
 	}
-
 }

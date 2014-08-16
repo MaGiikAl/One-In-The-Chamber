@@ -7,8 +7,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import fr.MaGiikAl.OneInTheChamber.Arena.Arena;
-import fr.MaGiikAl.OneInTheChamber.Main.OneInTheChamberMain;
+import fr.MaGiikAl.OneInTheChamber.Arena.ArenaManager;
+import fr.MaGiikAl.OneInTheChamber.Main.OneInTheChamber;
 
 public class PlayerDropItem implements Listener{
 
@@ -18,27 +18,18 @@ public class PlayerDropItem implements Listener{
 
 		final Player p = e.getPlayer();
 
-		for(Arena a : Arena.arenaObjects){
+		if(ArenaManager.getArenaManager().isInArena(p)){
 
-			if(a.getPlayers().contains(p.getName())){
+			e.setCancelled(true);
 
-				e.setCancelled(true);
+			new BukkitRunnable() {
 
-				new BukkitRunnable() {
-
-					@Override
-					public void run() {
-						p.updateInventory();
-						this.cancel();
-
-					}
-
-				}.runTaskTimer(OneInTheChamberMain.instance, 1L, 1L);
-
-			}
-
+				@Override
+				public void run() {
+					p.updateInventory();
+					this.cancel();
+				}
+			}.runTaskLater(OneInTheChamber.instance, 2L);
 		}
-
 	}
-
 }

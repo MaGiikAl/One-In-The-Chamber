@@ -7,32 +7,25 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
-import fr.MaGiikAl.OneInTheChamber.Arena.Arena;
+import fr.MaGiikAl.OneInTheChamber.Arena.ArenaManager;
 
 public class EntityDamage implements Listener{
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onEntityDamage(EntityDamageEvent e){
-		
+
 		if(e.getEntity() instanceof Player){
-			
+
 			Player p = (Player) e.getEntity();
-			
-			for(Arena a : Arena.arenaObjects){
-				
-				if(a.getPlayers().contains(p.getName())){
-					
-					if(e.getCause() != DamageCause.PROJECTILE && e.getCause() != DamageCause.ENTITY_ATTACK){
-						
-						e.setCancelled(true);
-						
-					}
+
+			if(ArenaManager.getArenaManager().isInArena(p)){
+
+				if(e.getCause() != DamageCause.PROJECTILE && e.getCause() != DamageCause.ENTITY_ATTACK){
+					e.setCancelled(true);
 				}
-				
 			}
-			
 		}
-		
 	}
-	
 }
+
+

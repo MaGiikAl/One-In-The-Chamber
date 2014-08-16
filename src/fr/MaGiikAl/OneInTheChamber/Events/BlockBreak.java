@@ -6,26 +6,19 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
-import fr.MaGiikAl.OneInTheChamber.Arena.Arena;
+import fr.MaGiikAl.OneInTheChamber.Arena.ArenaManager;
 
 public class BlockBreak implements Listener{
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onBlockBreak(BlockBreakEvent e){
-		
-		Player p = e.getPlayer();
-		
-		for(Arena a : Arena.arenaObjects){
-			
-			if(a.getPlayers().contains(p.getName())){
-				
-				e.setCancelled(true);
-				
-			}
 
-			
+		Player p = e.getPlayer();
+
+		if(ArenaManager.getArenaManager().isInArena(p)){
+			e.setCancelled(true);
 		}
-		
+
 	}
-	
+
 }

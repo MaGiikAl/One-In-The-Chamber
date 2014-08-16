@@ -1,0 +1,46 @@
+name: OneInTheChamber
+version: 0.1
+main: fr.MaGiikAl.OneInTheChamber.Main.OneInTheChamber
+author: MaGiikAl
+commands:
+    oitc:
+        description: oitc commands
+        usage: /<command>
+    oitc join <arena>:
+        description: Join an arena
+        usage: /<command>
+permissions:
+    oitc.player:
+        description: Default player permission to play OITC !
+        default: true
+        children:
+            oitc.join.signs: true
+            oitc.join: true
+            oitc.leave: true
+            oitc.stats: true
+            oitc.lobby: true
+    oitc.admin:
+        description: Admin permission to setup and manage the arenas !
+        default: false
+        children:
+            oitc.active: true
+            oitc.addspawn: true
+            oitc.create: true
+            oitc.disactive: true
+            oitc.reload: true
+            oitc.remove: true
+            oitc.setcountdown: true
+            oitc.setdisplayname: true
+            oitc.setlives: true
+            oitc.setlobby: true
+            oitc.setmaxplayers: true
+            oitc.setminplayers: true
+            oitc.setstart: true
+            oitc.stop: true
+    oitc.moderator:
+        description: Moderator permission to manage the arenas
+        default: false
+        children:
+            oitc.stop: true
+            oitc.active: true
+            oitc.disactive: true

@@ -9,8 +9,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import fr.MaGiikAl.OneInTheChamber.Arena.Arena;
-import fr.MaGiikAl.OneInTheChamber.Main.OneInTheChamberMain;
+import fr.MaGiikAl.OneInTheChamber.Arena.ArenaManager;
+import fr.MaGiikAl.OneInTheChamber.Main.OneInTheChamber;
 
 public class InventoryClick implements Listener{
 
@@ -21,27 +21,20 @@ public class InventoryClick implements Listener{
 
 		if(he.getType() == EntityType.PLAYER){
 			final Player p = (Player) e.getWhoClicked();
-			for(Arena a : Arena.arenaObjects){
-				if(a.getPlayers().contains(p.getName())){
+			
+			if(ArenaManager.getArenaManager().isInArena(p)){
+				e.setCancelled(true);
 
-					e.setCancelled(true);
+				new BukkitRunnable() {
 
-					new BukkitRunnable() {
-
-						@SuppressWarnings("deprecation")
-						@Override
-						public void run() {
-							p.updateInventory();
-							this.cancel();
-
-						}
-
-					}.runTaskTimer(OneInTheChamberMain.instance, 1L, 1L);
-				}
+					@SuppressWarnings("deprecation")
+					@Override
+					public void run() {
+						p.updateInventory();
+						this.cancel();
+					}
+				}.runTaskLater(OneInTheChamber.instance, 2L);
 			}
-
 		}
-
 	}
-
 }
