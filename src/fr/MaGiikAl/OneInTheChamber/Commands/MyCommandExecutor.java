@@ -45,7 +45,8 @@ public class MyCommandExecutor implements CommandExecutor{
 		this.commands.put("disactive", new DisactiveCommand());
 		this.commands.put("stop", new StopCommand());
 		this.commands.put("setstart", new SetStartLocationCommand());
-
+		this.commands.put("setprivatechat", new SetPrivateChatCommand());
+		this.commands.put("update", new UpdateCommand());
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

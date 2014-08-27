@@ -51,15 +51,15 @@ public class SignBreak implements Listener{
 					UtilSendMessage.sendMessage(player, notPerm);
 				}
 			}
-		}if(e.getBlock().getLocation().subtract(1, 0, 0).getBlock().getType() == Material.WALL_SIGN && !(e.getBlock().getState() instanceof Sign)){
-			Block block = e.getBlock().getLocation().subtract(1, 0, 0).getBlock();
-			if(block.getFace(e.getBlock()).getOppositeFace() == BlockFace.WEST){
-				Sign sign = (Sign) block.getState();
+		}
+		if(e.getBlock().getLocation().subtract(1, 0, 0).getBlock().getType() == Material.WALL_SIGN){
+			org.bukkit.material.Sign block = (org.bukkit.material.Sign) e.getBlock().getLocation().subtract(1, 0, 0).getBlock().getState().getData();
+			if(block.getFacing() == BlockFace.WEST){
+				Sign sign = (Sign) e.getBlock().getLocation().subtract(1, 0, 0).getBlock().getState();
 				if(sign.getLine(0).equals(name)){
 					if(player.hasPermission("oitc.signs")){
 						if(!sign.getLine(1).isEmpty()){
 							SignManager.removeSign(sign);
-							block.breakNaturally();
 							String succes = Language.getString("Language.Signs.Break");
 							UtilSendMessage.sendMessage(player, succes);
 						}
@@ -70,15 +70,14 @@ public class SignBreak implements Listener{
 					}
 				}
 			}
-		}if(e.getBlock().getLocation().add(1, 0, 0).getBlock().getType() == Material.WALL_SIGN && !(e.getBlock().getState() instanceof Sign)){
-			Block block = e.getBlock().getLocation().add(1, 0, 0).getBlock();
-			if(block.getFace(e.getBlock()).getOppositeFace() == BlockFace.EAST){
-				Sign sign = (Sign) block.getState();
+		}if(e.getBlock().getLocation().add(1, 0, 0).getBlock().getType() == Material.WALL_SIGN){
+			org.bukkit.material.Sign block = (org.bukkit.material.Sign) e.getBlock().getLocation().add(1, 0, 0).getBlock().getState().getData();
+			if(block.getFacing() == BlockFace.EAST){
+				Sign sign = (Sign) e.getBlock().getLocation().add(1, 0, 0).getBlock().getState();
 				if(sign.getLine(0).equals(name)){
 					if(player.hasPermission("oitc.signs")){
 						if(!sign.getLine(1).isEmpty()){
 							SignManager.removeSign(sign);
-							block.breakNaturally();
 							String succes = Language.getString("Language.Signs.Break");
 							UtilSendMessage.sendMessage(player, succes);
 						}
@@ -89,15 +88,14 @@ public class SignBreak implements Listener{
 					}
 				}
 			}
-		}if(e.getBlock().getLocation().subtract(0, 0, 1).getBlock().getType() == Material.WALL_SIGN && !(e.getBlock().getState() instanceof Sign)){
-			Block block = e.getBlock().getLocation().subtract(0, 0, 1).getBlock();
-			if(block.getFace(e.getBlock()).getOppositeFace() == BlockFace.NORTH){
-				Sign sign = (Sign) block.getState();
+		}if(e.getBlock().getLocation().subtract(0, 0, 1).getBlock().getType() == Material.WALL_SIGN){
+			org.bukkit.material.Sign block = (org.bukkit.material.Sign) e.getBlock().getLocation().subtract(0, 0, 1).getBlock().getState().getData();
+			if(block.getFacing() == BlockFace.NORTH){
+				Sign sign = (Sign) e.getBlock().getLocation().subtract(0, 0, 1).getBlock().getState();
 				if(sign.getLine(0).equals(name)){
 					if(player.hasPermission("oitc.signs")){
 						if(!sign.getLine(1).isEmpty()){
 							SignManager.removeSign(sign);
-							block.breakNaturally();
 							String succes = Language.getString("Language.Signs.Break");
 							UtilSendMessage.sendMessage(player, succes);
 						}
@@ -109,15 +107,14 @@ public class SignBreak implements Listener{
 				}
 			}
 		}
-		if(e.getBlock().getLocation().add(0, 0, 1).getBlock().getType() == Material.WALL_SIGN && !(e.getBlock().getState() instanceof Sign)){
-			Block block = e.getBlock().getLocation().add(0, 0, 1).getBlock();
-			if(block.getFace(e.getBlock()).getOppositeFace() == BlockFace.SOUTH){
-				Sign sign = (Sign) block.getState();
+		if(e.getBlock().getLocation().add(0, 0, 1).getBlock().getType() == Material.WALL_SIGN){
+			org.bukkit.material.Sign block = (org.bukkit.material.Sign) e.getBlock().getLocation().add(0, 0, 1).getBlock().getState().getData();
+			if(block.getFacing() == BlockFace.SOUTH){
+				Sign sign = (Sign) e.getBlock().getLocation().add(0, 0, 1).getBlock().getState();
 				if(sign.getLine(0).equals(name)){
 					if(player.hasPermission("oitc.signs")){
 						if(!sign.getLine(1).isEmpty()){
 							SignManager.removeSign(sign);
-							block.breakNaturally();
 							String succes = Language.getString("Language.Signs.Break");
 							UtilSendMessage.sendMessage(player, succes);
 						}
@@ -129,7 +126,7 @@ public class SignBreak implements Listener{
 				}
 			}
 		}
-		if(e.getBlock().getLocation().add(0, 1, 0).getBlock().getType() == Material.SIGN_POST && !(e.getBlock().getState() instanceof Sign)){
+		if(e.getBlock().getLocation().add(0, 1, 0).getBlock().getType() == Material.SIGN_POST){
 			Block block = e.getBlock().getLocation().add(0, 1, 0).getBlock();
 			Sign sign = (Sign) block.getState();
 			if(sign.getLine(0).equals(name)){

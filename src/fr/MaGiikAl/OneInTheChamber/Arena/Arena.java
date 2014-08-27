@@ -38,6 +38,8 @@ public class Arena {
 
 	private int lives = 5;
 
+	private boolean privateChat = true;
+	
 	public int countdownBeforeStart = 20;
 
 	private Status status = Status.JOINABLE;
@@ -104,6 +106,10 @@ public class Arena {
 		return this.active;
 	}
 
+	public boolean isPrivateChat(){
+		return this.privateChat;
+	}
+	
 	public void setName(String name){
 		this.name = name;
 		saveConfig();
@@ -170,6 +176,11 @@ public class Arena {
 		SignManager.updateSigns(this);
 	}
 
+	public void setPrivateChat(boolean privateChatOrNot){
+		this.privateChat = privateChatOrNot;
+		saveConfig();
+	}
+	
 	public boolean isFull() {
 		if(this.players.size() >= this.maxplayers){
 			SignManager.updateSigns(this);
@@ -222,7 +233,7 @@ public class Arena {
 
 										this.broadcast(join);
 
-										if(this.players.size() >= this.minplayers){
+										if(this.players.size() == this.minplayers){
 											this.startCooldown();
 										}
 									}else{
@@ -332,6 +343,7 @@ public class Arena {
 		arenaFile.set("MaxPlayers", this.maxplayers);
 		arenaFile.set("MinPlayers", this.minplayers);
 		arenaFile.set("CountdownBeforeStart", this.countdownBeforeStart);
+		arenaFile.set("PrivateChat", this.privateChat);
 
 		if(this.startLocation != null){
 			arenaFile.set("StartLocation", this.startLocation.getWorld().getName() + ", " + this.startLocation.getX() + ", " + this.startLocation.getY() + ", " + this.startLocation.getZ() + ", " + this.startLocation.getYaw() + ", " + this.startLocation.getPitch());
@@ -367,6 +379,12 @@ public class Arena {
 		}
 	}
 
+	public void chat(String message){
+		for(PlayerArena pa : this.players.values()){
+			pa.tell(message);
+		}
+	}
+	
 	public void startCooldown(){
 		if(this.status != Status.INGAME || this.status != Status.STARTING){
 			this.setStatus(Status.STARTING);

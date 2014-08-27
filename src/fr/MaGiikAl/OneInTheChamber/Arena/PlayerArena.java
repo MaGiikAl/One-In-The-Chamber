@@ -211,5 +211,7 @@ public class PlayerArena {
 		Scoreboard board = obj.getScoreboard();
 		this.player.setScoreboard(board);
 	}
-
+	public void tell(String message){
+		this.player.sendMessage(UtilChatColor.colorizeString(message));
+	}
 }
