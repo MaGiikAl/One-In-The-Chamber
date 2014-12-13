@@ -37,6 +37,7 @@ public class SetCountdownCommand implements BasicCommand {
 					int countdown = Integer.parseInt(args[0]);
 					Arena arena = ArenaManager.getArenaManager().getArenaByName(arenaName);
 					arena.setCountdownBeforeStart(countdown);
+					arena.saveConfig();
 					String succes = Language.getString("Language.Setup.Countdown").replaceAll("%arena", arenaName);
 					UtilSendMessage.sendMessage(player, succes);
 					return true;

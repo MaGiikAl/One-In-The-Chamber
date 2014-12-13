@@ -29,6 +29,7 @@ public class SetPrivateChatCommand implements BasicCommand {
 					if(args[0].equalsIgnoreCase("true") || args[0].equalsIgnoreCase("false")){
 						boolean privateChat = Boolean.parseBoolean(args[0]);
 						arena.setPrivateChat(privateChat);
+						arena.saveConfig();
 						String succes = Language.getString("Language.Setup.Private_chat").replaceAll("%value", privateChat + "").replaceAll("%arena", arenaName);
 						UtilSendMessage.sendMessage(player, succes);
 						return true;

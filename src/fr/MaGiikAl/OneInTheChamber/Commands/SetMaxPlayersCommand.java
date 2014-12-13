@@ -30,6 +30,7 @@ public class SetMaxPlayersCommand implements BasicCommand{
 				if(ArenaManager.getArenaManager().exists(arenaName)){
 					if(ArenaManager.getArenaManager().getArenaByName(arenaName).getMinPlayers() <= maxPlayers){
 						ArenaManager.getArenaManager().getArenaByName(arenaName).setMaxPlayers(maxPlayers);
+						ArenaManager.getArenaManager().getArenaByName(arenaName).saveConfig();
 						String succes = Language.getString("Language.Setup.Max_players_succesfully_set").replaceAll("%arena", arenaName);
 						UtilSendMessage.sendMessage(player, succes);
 						return true;

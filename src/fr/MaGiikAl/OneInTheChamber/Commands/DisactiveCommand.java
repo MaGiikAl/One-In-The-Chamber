@@ -24,6 +24,7 @@ public class DisactiveCommand implements BasicCommand {
 				if(ArenaManager.getArenaManager().exists(arenaName)){
 					Arena arena = ArenaManager.getArenaManager().getArenaByName(arenaName);
 					arena.setActive(false);
+					arena.saveConfig();
 					String succes = Language.getString("Language.Setup.Disactive").replaceAll("%arena", arenaName);
 					UtilSendMessage.sendMessage(player, succes);
 					return true;

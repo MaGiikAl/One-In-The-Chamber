@@ -102,6 +102,8 @@ public class OneInTheChamber extends JavaPlugin implements Listener{
 		File fichier_language = new File(getDataFolder() + File.separator + "Language.yml");
 		FileConfiguration Language = YamlConfiguration.loadConfiguration(fichier_language);
 
+		Language.options().header("Supports unicode characters ! \n<3, [*], [**], [p], [v], [+], [++]");
+
 		Language.addDefault("Language.Prefix", "&4&l[&6&lOneInTheChamber&4&l]");
 
 		Language.addDefault("Language.Updater.Update_available", "&eUpdate available !! Type /oitc update to update the plugin.");
@@ -142,7 +144,9 @@ public class OneInTheChamber extends JavaPlugin implements Listener{
 		Language.addDefault("Language.Help.Setup.Private_chat", "  &4>>>>>  &9&l/oitc setprivatechat <true|false> <arena> &bto set or not the private chat");
 		Language.addDefault("Language.Help.Setup.Start", "  &4>>>>>  &9&l/oitc setstart <arena> &bto set the start location");
 		Language.addDefault("Language.Help.Setup.Display_name", "  &4>>>>>  &9&l/oitc setdisplayname <arena> <display_name> &bto change the display name");
+		Language.addDefault("Language.Help.Setup.Type", "  &4>>>>>  &9&l/oitc settype <type> <arena> &bto set the type of an arena");
 		Language.addDefault("Language.Help.Setup.Lives", "  &4>>>>>  &9&l/oitc setlives <number> <arena> &bto set the lives of an arena");
+		Language.addDefault("Language.Help.Setup.Points", "  &4>>>>>  &9&l/oitc setpoints <number> <arena> &bto set the points of an arena");
 		Language.addDefault("Language.Help.Setup.Countdown", "  &4>>>>>  &9&l/oitc setcountdown <number> <arena> &bto set the countdown of an arena");
 		Language.addDefault("Language.Help.Setup.Active", "  &4>>>>>  &9&l/oitc active <arena> &bto active an arena");
 		Language.addDefault("Language.Help.Setup.Disactive", "  &4>>>>>  &9&l/oitc disactive <arena> &bto disactive an arena");
@@ -163,14 +167,21 @@ public class OneInTheChamber extends JavaPlugin implements Listener{
 		Language.addDefault("Language.Arena.Leave", "&3You leave the arena !");
 		Language.addDefault("Language.Arena.Win", "&3&lYou win the game !");
 		Language.addDefault("Language.Arena.Broadcast_player_lost", "&e&l%player &3lost the game !");
+		Language.addDefault("Language.Arena.Broadcast_player_win", "&e&l%player &3win the game !");
 		Language.addDefault("Language.Arena.Player_lost", "&3You lost the game !");
 		Language.addDefault("Language.Arena.End", "&3End of the game !");
 		Language.addDefault("Language.Arena.Reload", "&3You reload the plugin !");
 		Language.addDefault("Language.Arena.Server_reload", "&3Reload ! You leave the arena...");
 		Language.addDefault("Language.Arena.Death_message", "&a&l%killer &3smashed &a&l%player &3!");
 
-		Language.addDefault("Language.Signs.Name", "&4[&6&lOITC&4]");
-		Language.addDefault("Language.Signs.Arena", "&0&l%arena");
+		Language.set("Language.Signs.Name", null);
+		Language.addDefault("Language.Signs.Name_lives", "&4[&6&lOITC<3&4]");
+		Language.addDefault("Language.Signs.Name_points", "&4[&6&lOITC[**]&4]");
+
+		Language.set("Language.Signs.Arena", null);
+		Language.addDefault("Language.Signs.Arena_lives", "&0&l%arena<3");
+		Language.addDefault("Language.Signs.Arena_points", "&0&l%arena[**]");
+
 		Language.addDefault("Language.Signs.Joinable", "&a[Joinable]");
 		Language.addDefault("Language.Signs.InGame", "&8[InGame]");
 		Language.addDefault("Language.Signs.Starting", "&6[Starting]");
@@ -200,6 +211,8 @@ public class OneInTheChamber extends JavaPlugin implements Listener{
 		Language.addDefault("Language.Setup.Private_chat", "&cThe private chat has been set to &l%value &cfor the arena &l%arena &c!");
 		Language.addDefault("Language.Setup.Spawn_succesfully_added", "&cSpawn succesfully added for the arena &l%arena &c!");
 		Language.addDefault("Language.Setup.Lives", "&cThe number of lives has been set for the arena &l%arena &c!");
+		Language.addDefault("Language.Setup.Type", "&cThe type has been set for the arena &l%arena &c!");
+		Language.addDefault("Language.Setup.Points", "&cThe number of points has been set for the arena &l%arena &c!");
 		Language.addDefault("Language.Setup.Countdown", "&cThe countdown has been set for the arena &l%arena &c!");
 		Language.addDefault("Language.Setup.Start_set", "&cThe start of the arena &l%arena &chas been succesfully set !");
 		Language.addDefault("Language.Setup.Max_players_succesfully_set", "&cMax players set for the arena &l%arena &c!");
@@ -270,21 +283,21 @@ public class OneInTheChamber extends JavaPlugin implements Listener{
 			}
 		}
 	}
-	
+
 	public Updater update(UpdateType type, boolean announce){
 		return new Updater(instance, 77090, this.getFile(), type, announce);
 	}
-	
+
 	public static OneInTheChamber getInstance(){
 		return (OneInTheChamber) instance;
 	}
-	
+
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e){
-		
+
 		File fichier_language = new File(OneInTheChamber.instance.getDataFolder() + File.separator + "Language.yml");
 		FileConfiguration Language = YamlConfiguration.loadConfiguration(fichier_language);
-		
+
 		Player p = e.getPlayer();
 		if(p.hasPermission("oitc.update")){
 			Updater updater = update(UpdateType.NO_DOWNLOAD, false);

@@ -11,7 +11,7 @@ import fr.MaGiikAl.OneInTheChamber.Arena.ArenaManager;
 import fr.MaGiikAl.OneInTheChamber.Main.OneInTheChamber;
 import fr.MaGiikAl.OneInTheChamber.Utils.UtilSendMessage;
 
-public class SetStartLocationCommand implements BasicCommand {
+public class SetPointsCommand implements BasicCommand {
 
 	public boolean onCommand(Player player, String[] args) {
 
@@ -19,18 +19,26 @@ public class SetStartLocationCommand implements BasicCommand {
 		FileConfiguration Language = YamlConfiguration.loadConfiguration(fichier_language);
 
 		if(player.hasPermission(getPermission())){
-			if(args.length < 1){
+			if(args.length < 2){
 				String notEnoughArgs = Language.getString("Language.Error.Not_enough_args");
 				UtilSendMessage.sendMessage(player, notEnoughArgs);
 				return true;
 			}
-			if(args.length > 0){
-				String arenaName = args[0];
+			if(args.length > 1){
+				String arenaName = args[1];
 				if(ArenaManager.getArenaManager().getArenaByName(arenaName) != null){
+					try{
+						Integer.parseInt(args[0]);
+					}catch(NumberFormatException e){
+						String badArg = Language.getString("Language.Error.Bad_args");
+						UtilSendMessage.sendMessage(player, badArg);
+						return true;
+					}
+					int points = Integer.parseInt(args[0]);
 					Arena arena = ArenaManager.getArenaManager().getArenaByName(arenaName);
-					arena.setStartLocation(player.getLocation());
+					arena.setMaxPoints(points);
 					arena.saveConfig();
-					String succes = Language.getString("Language.Setup.Start_set").replaceAll("%arena", arenaName);
+					String succes = Language.getString("Language.Setup.Points").replaceAll("%arena", arenaName);
 					UtilSendMessage.sendMessage(player, succes);
 					return true;
 				}else{
@@ -53,15 +61,14 @@ public class SetStartLocationCommand implements BasicCommand {
 		FileConfiguration Language = YamlConfiguration.loadConfiguration(fichier_language);
 
 		if(player.hasPermission(getPermission())){
-			String help = Language.getString("Language.Help.Setup.Start");
+			String help = Language.getString("Language.Help.Setup.Points");
 			return help;
 		}
 		return "";
 	}
 
 	public String getPermission() {
-		return "oitc.setstart";
+		return "oitc.setpoints";
 	}
-
 
 }

@@ -24,6 +24,8 @@ import fr.MaGiikAl.OneInTheChamber.Utils.UtilSendMessage;
 
 public class Arena {
 
+	private Type type = Type.LIVES;
+
 	private String name;
 	private String displayName;
 
@@ -37,9 +39,10 @@ public class Arena {
 	private ArrayList<Location> spawnsLocations = new ArrayList<Location>();
 
 	private int lives = 5;
+	private int points = 15;
 
 	private boolean privateChat = true;
-	
+
 	public int countdownBeforeStart = 20;
 
 	private Status status = Status.JOINABLE;
@@ -86,6 +89,14 @@ public class Arena {
 		return this.lives;
 	}
 
+	public int getMaxPoints(){
+		return this.points;
+	}
+	
+	public Type getType(){
+		return this.type;
+	}
+
 	public Status getStatus(){
 		return this.status;
 	}
@@ -109,10 +120,9 @@ public class Arena {
 	public boolean isPrivateChat(){
 		return this.privateChat;
 	}
-	
+
 	public void setName(String name){
 		this.name = name;
-		saveConfig();
 	}
 
 	public void setDisplayName(String displayName){
@@ -122,18 +132,15 @@ public class Arena {
 			this.displayName = this.name;
 		}
 		SignManager.updateSigns(this);
-		saveConfig();
 	}
 
 	public void setMaxPlayers(int mp){
 		this.maxplayers = mp;
 		SignManager.updateSigns(this);
-		saveConfig();
 	}
 
 	public void setMinPlayers(int mp){
 		this.minplayers = mp;
-		saveConfig();
 	}
 
 	public void setActive(boolean active){
@@ -148,27 +155,31 @@ public class Arena {
 		}
 		this.active = active;
 		SignManager.updateSigns(this);
-		saveConfig();
 	}
 
 	public void setStartLocation(Location startLoc){
 		this.startLocation = startLoc;
-		saveConfig();
+	}
+
+	public void setType(Type type){
+		this.type = type;
+		SignManager.updateSigns(this);
 	}
 
 	public void addSpawnLocation(Location spawnLoc){
 		this.spawnsLocations.add(spawnLoc);
-		saveConfig();
 	}
 
 	public void setLives(int lives){
 		this.lives = lives;
-		saveConfig();
 	}
 
+	public void setMaxPoints(int points){
+		this.points = points;
+	}
+	
 	public void setCountdownBeforeStart(int countdown){
 		this.countdownBeforeStart = countdown;
-		saveConfig();
 	}
 
 	public void setStatus(Status status){
@@ -178,9 +189,8 @@ public class Arena {
 
 	public void setPrivateChat(boolean privateChatOrNot){
 		this.privateChat = privateChatOrNot;
-		saveConfig();
 	}
-	
+
 	public boolean isFull() {
 		if(this.players.size() >= this.maxplayers){
 			SignManager.updateSigns(this);
@@ -217,7 +227,7 @@ public class Arena {
 											this.objective.unregister();
 											this.objective = null;
 										}
-										
+
 										PlayerArena pa = new PlayerArena(player, this);
 										this.players.put(player, pa);
 
@@ -290,15 +300,20 @@ public class Arena {
 					this.win(winner.getPlayer());
 				}
 			}
+			if(this.players.isEmpty()){
+				this.stop("", Status.JOINABLE);
+			}
 			SignManager.updateSigns(this);
 		}
 	}
 
 	public void stop(String pourJoueurs, Status status){
 		this.setStatus(status);
-		for(PlayerArena pa : this.getPlayers()){
-			Player player = pa.getPlayer();
-			this.removePlayer(player, pourJoueurs, "");
+		if(!this.getPlayers().isEmpty()){
+			for(PlayerArena pa : this.getPlayers()){
+				Player player = pa.getPlayer();
+				this.removePlayer(player, pourJoueurs, "");
+			}
 		}
 		SignManager.updateSigns(this);
 	}
@@ -337,9 +352,11 @@ public class Arena {
 		File fichier_arena = new File(OneInTheChamber.instance.getDataFolder() + File.separator + "Arenas" + File.separator + this.name + ".yml");
 		FileConfiguration arenaFile = YamlConfiguration.loadConfiguration(fichier_arena);
 
+		arenaFile.set("Type", this.type.toString());
 		arenaFile.set("DisplayName", this.displayName);
 		arenaFile.set("Active", this.active);
 		arenaFile.set("Lives", this.lives);
+		arenaFile.set("Points", this.points);
 		arenaFile.set("MaxPlayers", this.maxplayers);
 		arenaFile.set("MinPlayers", this.minplayers);
 		arenaFile.set("CountdownBeforeStart", this.countdownBeforeStart);
@@ -384,7 +401,7 @@ public class Arena {
 			pa.tell(message);
 		}
 	}
-	
+
 	public void startCooldown(){
 		if(this.status != Status.INGAME || this.status != Status.STARTING){
 			this.setStatus(Status.STARTING);

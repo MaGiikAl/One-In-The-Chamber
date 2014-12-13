@@ -28,6 +28,7 @@ public class SetDisplayNameCommand implements BasicCommand {
 					Arena arena = ArenaManager.getArenaManager().getArenaByName(arenaName);
 					String displayName = args[1];
 					arena.setDisplayName(displayName);
+					arena.saveConfig();
 					String succes = Language.getString("Language.Setup.Display_name").replaceAll("%displayname", displayName).replaceAll("%arena", arenaName);
 					UtilSendMessage.sendMessage(player, succes);
 					return true;

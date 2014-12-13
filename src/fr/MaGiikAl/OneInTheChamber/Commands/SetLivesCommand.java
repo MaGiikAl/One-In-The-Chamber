@@ -37,6 +37,7 @@ public class SetLivesCommand implements BasicCommand {
 					int lives = Integer.parseInt(args[0]);
 					Arena arena = ArenaManager.getArenaManager().getArenaByName(arenaName);
 					arena.setLives(lives);
+					arena.saveConfig();
 					String succes = Language.getString("Language.Setup.Lives").replaceAll("%arena", arenaName);
 					UtilSendMessage.sendMessage(player, succes);
 					return true;

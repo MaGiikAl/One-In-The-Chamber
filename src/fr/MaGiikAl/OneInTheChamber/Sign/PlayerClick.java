@@ -28,7 +28,8 @@ public class PlayerClick implements Listener{
 		File fichier_language = new File(OneInTheChamber.instance.getDataFolder() + File.separator + "Language.yml");
 		FileConfiguration Language = YamlConfiguration.loadConfiguration(fichier_language);
 
-		String name = UtilChatColor.colorizeString(Language.getString("Language.Signs.Name"));
+		String name1 = UtilChatColor.colorizeString(Language.getString("Language.Signs.Name_lives"));
+		String name2 = UtilChatColor.colorizeString(Language.getString("Language.Signs.Name_points"));
 
 		if(e.getAction() != Action.RIGHT_CLICK_BLOCK){
 			return;
@@ -39,12 +40,13 @@ public class PlayerClick implements Listener{
 
 		Sign sign = (Sign)e.getClickedBlock().getState();
 
-		if(sign.getLine(0).equals(name)){
+		if(sign.getLine(0).equals(name1) || sign.getLine(0).equals(name2)){
 			if(!sign.getLine(1).isEmpty()){
 				String dislayName = ChatColor.stripColor(sign.getLine(1));
 				if(player.hasPermission("oitc.join.signs")){
 					for(Arena arena : ArenaManager.getArenaManager().getArenas()){
-						if(arena.getDisplayName().equals(dislayName)){
+						if(dislayName.contains(arena.getDisplayName())){
+							
 							arena.addPlayer(player);
 							e.setCancelled(true);
 						}

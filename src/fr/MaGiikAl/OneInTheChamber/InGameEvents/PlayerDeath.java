@@ -17,6 +17,7 @@ import fr.MaGiikAl.OneInTheChamber.Arena.Arena;
 import fr.MaGiikAl.OneInTheChamber.Arena.ArenaManager;
 import fr.MaGiikAl.OneInTheChamber.Arena.PlayerArena;
 import fr.MaGiikAl.OneInTheChamber.Arena.Status;
+import fr.MaGiikAl.OneInTheChamber.Arena.Type;
 import fr.MaGiikAl.OneInTheChamber.Main.OneInTheChamber;
 import fr.MaGiikAl.OneInTheChamber.Utils.UtilChatColor;
 
@@ -24,13 +25,13 @@ public class PlayerDeath implements Listener{
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerDeath(PlayerDeathEvent e){
-		
+
 		if(e.getEntityType() == EntityType.PLAYER){
 
 			final Player player = e.getEntity();
 
 			if(ArenaManager.getArenaManager().isInArena(player)){
-				
+
 				new BukkitRunnable() {
 					@Override
 					public void run() {
@@ -55,22 +56,27 @@ public class PlayerDeath implements Listener{
 				}.runTaskLater(OneInTheChamber.instance, 2L);
 
 				Arena arena = ArenaManager.getArenaManager().getArenaByPlayer(player);
-				
+
 				if(arena.getStatus() == Status.INGAME){
 
 					PlayerArena pa = PlayerArena.getPlayerArenaByPlayer(player);
-					
+
 					e.setDeathMessage("");
 					e.getDrops().removeAll(e.getDrops());
 					e.setDroppedExp(0);
-					pa.setLives(pa.getLives() -1);
+					if(pa.getArena().getType() == Type.LIVES){
+						pa.setLives(pa.getLives() -1);
+					}
 
 					if(arena.getPlayers().contains(PlayerArena.getPlayerArenaByPlayer(player.getKiller()))){
+
+						File fichier_language = new File(OneInTheChamber.instance.getDataFolder() + File.separator + "Language.yml");
+						FileConfiguration Language = YamlConfiguration.loadConfiguration(fichier_language);
 
 						if(player.getKiller().getName() != player.getName()){
 
 							PlayerArena killer = PlayerArena.getPlayerArenaByPlayer(player.getKiller());
-							
+
 							killer.addArrow();
 
 							File fichier_killer = new File(OneInTheChamber.instance.getDataFolder() + File.separator + "Players" + File.separator + killer.getName() + ".yml");
@@ -78,7 +84,7 @@ public class PlayerDeath implements Listener{
 
 							Killer.set("Kills", Killer.getInt("Kills") +1);
 							Killer.set("Coins", Killer.getInt("Coins") +2);
-							
+
 							killer.setScore(killer.getScore() + 1);
 
 							try {
@@ -87,15 +93,25 @@ public class PlayerDeath implements Listener{
 								e1.printStackTrace();
 							}
 							arena.updateScores();
-						}
-					}
 
-					File fichier_language = new File(OneInTheChamber.instance.getDataFolder() + File.separator + "Language.yml");
-					FileConfiguration Language = YamlConfiguration.loadConfiguration(fichier_language);
-					
-					String DeathMessage = UtilChatColor.colorizeString(Language.getString("Language.Arena.Death_message")).replaceAll("%killer", player.getKiller().getName()).replaceAll("%player", player.getName());
-					
-					arena.broadcast(DeathMessage);
+							String DeathMessage = UtilChatColor.colorizeString(Language.getString("Language.Arena.Death_message")).replaceAll("%killer", player.getKiller().getName()).replaceAll("%player", player.getName());
+
+							arena.broadcast(DeathMessage);
+
+							if(killer.getArena().getType() == Type.POINTS){
+
+								if(killer.getScore() == killer.getArena().getMaxPoints()){
+
+									String pourJoueurs = UtilChatColor.colorizeString(Language.getString("Language.Arena.Broadcast_player_win")).replaceAll("%player", player.getKiller().getName());
+
+									killer.getArena().stop(pourJoueurs, Status.JOINABLE);
+									killer.getArena().win(killer.getPlayer());
+								}
+							}
+
+						}
+
+					}
 				}
 			}
 

@@ -11,10 +11,12 @@ import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import fr.MaGiikAl.OneInTheChamber.Arena.Arena;
 import fr.MaGiikAl.OneInTheChamber.Arena.ArenaManager;
 import fr.MaGiikAl.OneInTheChamber.Arena.Status;
+import fr.MaGiikAl.OneInTheChamber.Arena.Type;
 import fr.MaGiikAl.OneInTheChamber.Main.OneInTheChamber;
 import fr.MaGiikAl.OneInTheChamber.Utils.LocationManager;
 import fr.MaGiikAl.OneInTheChamber.Utils.UtilChatColor;
@@ -116,34 +118,72 @@ public class SignManager {
 		File fichier_language = new File(OneInTheChamber.instance.getDataFolder() + File.separator + "Language.yml");
 		FileConfiguration Language = YamlConfiguration.loadConfiguration(fichier_language);	
 
-		String name = UtilChatColor.colorizeString(Language.getString("Language.Signs.Name"));
-		String joinable = UtilChatColor.colorizeString(Language.getString("Language.Signs.Joinable"));
-		String ingame = UtilChatColor.colorizeString(Language.getString("Language.Signs.InGame"));
-		String starting = UtilChatColor.colorizeString(Language.getString("Language.Signs.Starting"));
-		String notJoinable = UtilChatColor.colorizeString(Language.getString("Language.Signs.Not_joinable"));
-		String arenaString = UtilChatColor.colorizeString(Language.getString("Language.Signs.Arena")).replaceAll("%arena", arena.getDisplayName());
-		String numberinarena = UtilChatColor.colorizeString(Language.getString("Language.Signs.Number_in_arena")).replaceAll("%number", arena.getPlayers().size() + "").replaceAll("%maxplayers", arena.getMaxPlayers() + "");
-
 		if(getArenaSigns(arena) != null){
-			for(Sign arenaSign : getArenaSigns(arena)){
-				arenaSign.setLine(0, name);
-				arenaSign.setLine(1, arenaString);
+			for(final Sign arenaSign : getArenaSigns(arena)){
+				if(arena.getType() == Type.LIVES){
 
-				if(arena.getStatus() == Status.JOINABLE){
-					arenaSign.setLine(2, joinable);
-				}
-				if(arena.getStatus() == Status.INGAME){
-					arenaSign.setLine(2, ingame);
-				}
-				if(arena.getStatus() == Status.STARTING){
-					arenaSign.setLine(2, starting);
-				}
-				if(arena.getStatus() == Status.NOTJOINABLE){
-					arenaSign.setLine(2, notJoinable);
-				}
-				arenaSign.setLine(3, numberinarena);
+					String name = UtilChatColor.colorizeString(Language.getString("Language.Signs.Name_lives"));
+					String joinable = UtilChatColor.colorizeString(Language.getString("Language.Signs.Joinable"));
+					String ingame = UtilChatColor.colorizeString(Language.getString("Language.Signs.InGame"));
+					String starting = UtilChatColor.colorizeString(Language.getString("Language.Signs.Starting"));
+					String notJoinable = UtilChatColor.colorizeString(Language.getString("Language.Signs.Not_joinable"));
+					String arenaString = UtilChatColor.colorizeString(Language.getString("Language.Signs.Arena_lives")).replaceAll("%arena", arena.getDisplayName());
+					String numberinarena = UtilChatColor.colorizeString(Language.getString("Language.Signs.Number_in_arena")).replaceAll("%number", arena.getPlayers().size() + "").replaceAll("%maxplayers", arena.getMaxPlayers() + "");arenaSign.setLine(0, name);
 
-				arenaSign.update();
+					arenaSign.setLine(1, arenaString);
+
+					if(arena.getStatus() == Status.JOINABLE){
+						arenaSign.setLine(2, joinable);
+					}
+					if(arena.getStatus() == Status.INGAME){
+						arenaSign.setLine(2, ingame);
+					}
+					if(arena.getStatus() == Status.STARTING){
+						arenaSign.setLine(2, starting);
+					}
+					if(arena.getStatus() == Status.NOTJOINABLE){
+						arenaSign.setLine(2, notJoinable);
+					}
+					arenaSign.setLine(3, numberinarena);
+
+				}if(arena.getType() == Type.POINTS){
+
+					String name = UtilChatColor.colorizeString(Language.getString("Language.Signs.Name_points"));
+					String joinable = UtilChatColor.colorizeString(Language.getString("Language.Signs.Joinable"));
+					String ingame = UtilChatColor.colorizeString(Language.getString("Language.Signs.InGame"));
+					String starting = UtilChatColor.colorizeString(Language.getString("Language.Signs.Starting"));
+					String notJoinable = UtilChatColor.colorizeString(Language.getString("Language.Signs.Not_joinable"));
+					String arenaString = UtilChatColor.colorizeString(Language.getString("Language.Signs.Arena_points")).replaceAll("%arena", arena.getDisplayName());
+					String numberinarena = UtilChatColor.colorizeString(Language.getString("Language.Signs.Number_in_arena")).replaceAll("%number", arena.getPlayers().size() + "").replaceAll("%maxplayers", arena.getMaxPlayers() + "");arenaSign.setLine(0, name);
+
+					arenaSign.setLine(1, arenaString);
+
+					if(arena.getStatus() == Status.JOINABLE){
+						arenaSign.setLine(2, joinable);
+					}
+					if(arena.getStatus() == Status.INGAME){
+						arenaSign.setLine(2, ingame);
+					}
+					if(arena.getStatus() == Status.STARTING){
+						arenaSign.setLine(2, starting);
+					}
+					if(arena.getStatus() == Status.NOTJOINABLE){
+						arenaSign.setLine(2, notJoinable);
+					}
+					arenaSign.setLine(3, numberinarena);
+				}
+				if(OneInTheChamber.instance.isEnabled()){
+
+					new BukkitRunnable() {
+
+						@Override
+						public void run() {
+							arenaSign.update();
+						}
+					}.runTaskLater(OneInTheChamber.instance, 2L);
+				}
+
+
 			}
 		}
 	}

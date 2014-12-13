@@ -35,6 +35,7 @@ public class PlayerArena {
 	public PlayerArena(Player player, Arena arena){
 		this.player = player;
 		this.lives = arena.getLives();
+
 		this.arena = arena;
 		players.put(player.getName(), this);
 		createConfig();
@@ -107,6 +108,7 @@ public class PlayerArena {
 		this.player.setScoreboard(board);
 
 		this.lives = this.arena.getLives();
+
 		this.score = 0;
 	}
 
@@ -119,30 +121,57 @@ public class PlayerArena {
 		String arrow = UtilChatColor.colorizeString(Language.getString("Language.Stuff.Arrow"));
 		String redstone = UtilChatColor.colorizeString(Language.getString("Language.Stuff.Redstone"));
 
-		ItemStack redstone2 = new ItemStack(Material.REDSTONE, this.lives);
-		ItemStack sword2 = new ItemStack(Material.STONE_SWORD);
-		ItemStack bow2 = new ItemStack(Material.BOW);
-		ItemStack arrow2 = new ItemStack(Material.ARROW);
+		if(arena.getType().equals(Type.LIVES)){
+			ItemStack redstone2 = new ItemStack(Material.REDSTONE, this.lives);
 
-		ItemMeta imredstone = redstone2.getItemMeta();
-		ItemMeta imsword = sword2.getItemMeta();
-		ItemMeta imbow = bow2.getItemMeta();
-		ItemMeta imarrow = arrow2.getItemMeta();
+			ItemStack sword2 = new ItemStack(Material.STONE_SWORD);
+			ItemStack bow2 = new ItemStack(Material.BOW);
+			ItemStack arrow2 = new ItemStack(Material.ARROW);
 
-		imredstone.setDisplayName(redstone);
-		imsword.setDisplayName(sword);
-		imbow.setDisplayName(bow);
-		imarrow.setDisplayName(arrow);
+			ItemMeta imredstone = redstone2.getItemMeta();
+			ItemMeta imsword = sword2.getItemMeta();
+			ItemMeta imbow = bow2.getItemMeta();
+			ItemMeta imarrow = arrow2.getItemMeta();
 
-		redstone2.setItemMeta(imredstone);
-		sword2.setItemMeta(imsword);
-		bow2.setItemMeta(imbow);
-		arrow2.setItemMeta(imarrow);
+			imredstone.setDisplayName(redstone);
+			imsword.setDisplayName(sword);
+			imbow.setDisplayName(bow);
+			imarrow.setDisplayName(arrow);
 
-		this.player.getInventory().setItem(0, sword2);
-		this.player.getInventory().setItem(1, bow2);
-		this.player.getInventory().setItem(2, arrow2);
-		this.player.getInventory().setItem(8, redstone2);
+			redstone2.setItemMeta(imredstone);
+			sword2.setItemMeta(imsword);
+			bow2.setItemMeta(imbow);
+			arrow2.setItemMeta(imarrow);
+
+			this.player.getInventory().setItem(0, sword2);
+			this.player.getInventory().setItem(1, bow2);
+			this.player.getInventory().setItem(2, arrow2);
+			this.player.getInventory().setItem(8, redstone2);
+		}
+		if(arena.getType().equals(Type.POINTS)){
+
+
+			ItemStack sword2 = new ItemStack(Material.STONE_SWORD);
+			ItemStack bow2 = new ItemStack(Material.BOW);
+			ItemStack arrow2 = new ItemStack(Material.ARROW);
+
+			ItemMeta imsword = sword2.getItemMeta();
+			ItemMeta imbow = bow2.getItemMeta();
+			ItemMeta imarrow = arrow2.getItemMeta();
+
+			imsword.setDisplayName(sword);
+			imbow.setDisplayName(bow);
+			imarrow.setDisplayName(arrow);
+
+			sword2.setItemMeta(imsword);
+			bow2.setItemMeta(imbow);
+			arrow2.setItemMeta(imarrow);
+
+			this.player.getInventory().setItem(0, sword2);
+			this.player.getInventory().setItem(1, bow2);
+			this.player.getInventory().setItem(2, arrow2);
+
+		}
 	}
 
 	public void playSound(Sound sound, float volume){

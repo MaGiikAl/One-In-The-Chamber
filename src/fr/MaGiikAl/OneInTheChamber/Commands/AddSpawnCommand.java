@@ -23,6 +23,7 @@ public class AddSpawnCommand implements BasicCommand{
 				if(ArenaManager.getArenaManager().getArenaByName(arenaName) != null){
 					Location spawnLoc = player.getLocation();
 					ArenaManager.getArenaManager().getArenaByName(arenaName).addSpawnLocation(spawnLoc);
+					ArenaManager.getArenaManager().getArenaByName(arenaName).saveConfig();
 					String succes = Language.getString("Language.Setup.Spawn_succesfully_added").replaceAll("%arena", arenaName);
 					UtilSendMessage.sendMessage(player, succes);
 					return true;

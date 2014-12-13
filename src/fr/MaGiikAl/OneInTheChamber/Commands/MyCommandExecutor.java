@@ -39,6 +39,8 @@ public class MyCommandExecutor implements CommandExecutor{
 		this.commands.put("setminplayers", new SetMinPlayersCommand());
 		this.commands.put("setmaxplayers", new SetMaxPlayersCommand());
 		this.commands.put("setlives", new SetLivesCommand());
+		this.commands.put("setpoints", new SetPointsCommand());
+		this.commands.put("settype", new SetTypeCommand());
 		this.commands.put("setcountdown", new SetCountdownCommand());
 		this.commands.put("setdisplayname", new SetDisplayNameCommand());
 		this.commands.put("active", new ActiveCommand());

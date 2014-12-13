@@ -26,13 +26,14 @@ public class SignBreak implements Listener{
 		File fichier_language = new File(OneInTheChamber.instance.getDataFolder() + File.separator + "Language.yml");
 		FileConfiguration Language = YamlConfiguration.loadConfiguration(fichier_language);
 
-		String name = UtilChatColor.colorizeString(Language.getString("Language.Signs.Name"));
-
+		String name1 = UtilChatColor.colorizeString(Language.getString("Language.Signs.Name_lives"));
+		String name2 = UtilChatColor.colorizeString(Language.getString("Language.Signs.Name_points"));
+		
 		Player player = e.getPlayer();
 
 		if(e.getBlock().getState() instanceof Sign){
 			Sign sign = (Sign) e.getBlock().getState();
-			if(sign.getLine(0).equals(name)){
+			if(sign.getLine(0).equals(name1) || sign.getLine(0).equals(name2)){
 				if(player.hasPermission("oitc.signs")){
 					if(!sign.getLine(1).isEmpty()){
 						if(player.isSneaking()){
@@ -56,7 +57,7 @@ public class SignBreak implements Listener{
 			org.bukkit.material.Sign block = (org.bukkit.material.Sign) e.getBlock().getLocation().subtract(1, 0, 0).getBlock().getState().getData();
 			if(block.getFacing() == BlockFace.WEST){
 				Sign sign = (Sign) e.getBlock().getLocation().subtract(1, 0, 0).getBlock().getState();
-				if(sign.getLine(0).equals(name)){
+				if(sign.getLine(0).equals(name1) || sign.getLine(0).equals(name2)){
 					if(player.hasPermission("oitc.signs")){
 						if(!sign.getLine(1).isEmpty()){
 							SignManager.removeSign(sign);
@@ -74,7 +75,7 @@ public class SignBreak implements Listener{
 			org.bukkit.material.Sign block = (org.bukkit.material.Sign) e.getBlock().getLocation().add(1, 0, 0).getBlock().getState().getData();
 			if(block.getFacing() == BlockFace.EAST){
 				Sign sign = (Sign) e.getBlock().getLocation().add(1, 0, 0).getBlock().getState();
-				if(sign.getLine(0).equals(name)){
+				if(sign.getLine(0).equals(name1) || sign.getLine(0).equals(name2)){
 					if(player.hasPermission("oitc.signs")){
 						if(!sign.getLine(1).isEmpty()){
 							SignManager.removeSign(sign);
@@ -92,7 +93,7 @@ public class SignBreak implements Listener{
 			org.bukkit.material.Sign block = (org.bukkit.material.Sign) e.getBlock().getLocation().subtract(0, 0, 1).getBlock().getState().getData();
 			if(block.getFacing() == BlockFace.NORTH){
 				Sign sign = (Sign) e.getBlock().getLocation().subtract(0, 0, 1).getBlock().getState();
-				if(sign.getLine(0).equals(name)){
+				if(sign.getLine(0).equals(name1) || sign.getLine(0).equals(name2)){
 					if(player.hasPermission("oitc.signs")){
 						if(!sign.getLine(1).isEmpty()){
 							SignManager.removeSign(sign);
@@ -111,7 +112,7 @@ public class SignBreak implements Listener{
 			org.bukkit.material.Sign block = (org.bukkit.material.Sign) e.getBlock().getLocation().add(0, 0, 1).getBlock().getState().getData();
 			if(block.getFacing() == BlockFace.SOUTH){
 				Sign sign = (Sign) e.getBlock().getLocation().add(0, 0, 1).getBlock().getState();
-				if(sign.getLine(0).equals(name)){
+				if(sign.getLine(0).equals(name1) || sign.getLine(0).equals(name2)){
 					if(player.hasPermission("oitc.signs")){
 						if(!sign.getLine(1).isEmpty()){
 							SignManager.removeSign(sign);
@@ -129,7 +130,7 @@ public class SignBreak implements Listener{
 		if(e.getBlock().getLocation().add(0, 1, 0).getBlock().getType() == Material.SIGN_POST){
 			Block block = e.getBlock().getLocation().add(0, 1, 0).getBlock();
 			Sign sign = (Sign) block.getState();
-			if(sign.getLine(0).equals(name)){
+			if(sign.getLine(0).equals(name1) || sign.getLine(0).equals(name2)){
 				if(player.hasPermission("oitc.signs")){
 					if(!sign.getLine(1).isEmpty()){
 						SignManager.removeSign(sign);

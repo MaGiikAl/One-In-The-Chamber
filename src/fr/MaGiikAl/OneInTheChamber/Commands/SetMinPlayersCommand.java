@@ -30,6 +30,7 @@ public class SetMinPlayersCommand implements BasicCommand{
 				if(ArenaManager.getArenaManager().getArenaByName(arenaName) != null){
 					if(ArenaManager.getArenaManager().getArenaByName(arenaName).getMaxPlayers() >= minPlayers){
 						ArenaManager.getArenaManager().getArenaByName(arenaName).setMinPlayers(minPlayers);
+						ArenaManager.getArenaManager().getArenaByName(arenaName).saveConfig();
 						String succes = Language.getString("Language.Setup.Min_players_succesfully_set").replaceAll("%arena", arenaName);
 						UtilSendMessage.sendMessage(player, succes);
 						return true;

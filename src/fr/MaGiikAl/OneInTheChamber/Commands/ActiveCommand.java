@@ -24,6 +24,7 @@ public class ActiveCommand implements BasicCommand {
 				if(ArenaManager.getArenaManager().exists(arenaName)){
 					Arena arena = ArenaManager.getArenaManager().getArenaByName(arenaName);
 					arena.setActive(true);
+					arena.saveConfig();
 					String succes = Language.getString("Language.Setup.Active").replaceAll("%arena", arenaName);
 					UtilSendMessage.sendMessage(player, succes);
 					return true;

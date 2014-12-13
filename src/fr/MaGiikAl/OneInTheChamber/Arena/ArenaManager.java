@@ -17,7 +17,7 @@ import fr.MaGiikAl.OneInTheChamber.Main.OneInTheChamber;
 import fr.MaGiikAl.OneInTheChamber.Utils.LocationManager;
 
 public class ArenaManager {
-	
+
 	static ArenaManager am = new ArenaManager();
 
 	public HashMap<String, Arena> arenas = new HashMap<String, Arena>();
@@ -29,10 +29,10 @@ public class ArenaManager {
 		if(this.arenas.size() < 1) return null;
 		return (Arena)this.arenas.get(arenaName);
 	}
-	
+
 	public ArrayList<Arena> getArenas(){
 		ArrayList<Arena> arenasList = new ArrayList<Arena>();
-		
+
 		if(this.arenas.values().isEmpty()) return null;
 
 		for(Arena arena : this.arenas.values()){
@@ -40,7 +40,7 @@ public class ArenaManager {
 		}
 		return arenasList;
 	}
-	
+
 	public Arena getArenaByPlayer(Player player){
 		for(Arena arena : this.arenas.values()){
 			if(arena.getPlayers().contains(PlayerArena.getPlayerArenaByPlayer(player))){
@@ -73,7 +73,7 @@ public class ArenaManager {
 		Arena arena = new Arena(arenaName);
 
 		this.arenas.put(arenaName, arena);
-		
+
 		File fichier_arena = new File(OneInTheChamber.instance.getDataFolder() + File.separator + "Arenas" + File.separator + arenaName + ".yml");
 
 		if(fichier_arena.exists()){
@@ -83,6 +83,10 @@ public class ArenaManager {
 				String displayName = arenaFile.getString("DisplayName");
 				arena.setDisplayName(displayName);
 			}
+			if(arenaFile.contains("Type")){
+				Type type = Type.valueOf(arenaFile.getString("Type"));
+				arena.setType(type);
+			}
 			if(arenaFile.contains("Active")){
 				boolean active = arenaFile.getBoolean("Active");
 				arena.setActive(active);
@@ -90,6 +94,10 @@ public class ArenaManager {
 			if(arenaFile.contains("Lives")){
 				int lives = arenaFile.getInt("Lives");
 				arena.setLives(lives);
+			}
+			if(arenaFile.contains("Points")){
+				int points = arenaFile.getInt("Points");
+				arena.setMaxPoints(points);
 			}
 			if(arenaFile.contains("MaxPlayers")){
 				int mp = arenaFile.getInt("MaxPlayers");
@@ -107,7 +115,7 @@ public class ArenaManager {
 				boolean privateChat = arenaFile.getBoolean("PrivateChat");
 				arena.setPrivateChat(privateChat);
 			}
-			
+
 			if(arenaFile.contains("StartLocation") && !arenaFile.getString("StartLocation").isEmpty()){
 				String startLocation = arenaFile.getString("StartLocation");
 				arena.setStartLocation(LocationManager.stringToLoc(startLocation));
@@ -123,27 +131,25 @@ public class ArenaManager {
 		}else{
 			arena.saveConfig();
 		}
-
-
 	}
 
 	public void deleteArena(Arena arena){
-		
+
 		File fichier_signs = new File(OneInTheChamber.instance.getDataFolder() + File.separator + "Signs.yml");
 		YamlConfiguration signsFile = YamlConfiguration.loadConfiguration(fichier_signs);
-		
+
 		signsFile.set("Arenas." + arena.getName(), null);
-		
+
 		try {
 			signsFile.save(fichier_signs);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		this.arenas.remove(arena.getName());
 		File fichier_arena = new File(OneInTheChamber.instance.getDataFolder() + File.separator + "Arenas" + File.separator + arena.getName() + ".yml");
 		fichier_arena.delete();
-		
+
 	}
 
 	public void setLobby(Location loc){

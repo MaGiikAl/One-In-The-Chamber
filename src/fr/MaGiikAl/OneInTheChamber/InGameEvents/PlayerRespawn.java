@@ -57,7 +57,9 @@ public class PlayerRespawn implements Listener{
 
 							pa.getPlayer().teleport(arena.getSpawnsLocations().get(nbAlea));
 							pa.loadGameInventory();
+							pa.getArena().updateScores();
 						}
+
 					}
 				}.runTaskLater(OneInTheChamber.instance, 1L);
 
